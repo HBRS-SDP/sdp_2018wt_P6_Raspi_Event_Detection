@@ -13,7 +13,7 @@ class VideoHandler(object):
 	-----------------------------------
 	"""
 	def __init__(self, arg):
-		super VideoHandler, self).__init__()
+		super (VideoHandler, self).__init__()
 		self.arg = arg
 
 class Stream(object):
