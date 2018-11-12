@@ -21,3 +21,10 @@ class Event2(object):
 	def __init__(self, arg):
 		super(Event2, self).__init__()
 		self.arg = arg
+		
+class Event3(object):
+	"""docstring for Event3"""
+	def __init__(self, arg):
+		super(Event3, self).__init__()
+		self.arg = arg
+		
