@@ -19,4 +19,4 @@ The modulewise representation and software flow is as follows:
 
 The respective code(s) are given in the src folder. 
 
-Note: This is a project under development.
+Note: This is a project under development
