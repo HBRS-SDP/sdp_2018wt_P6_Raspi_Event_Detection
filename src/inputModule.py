@@ -15,12 +15,11 @@ class VideoHandler(object):
 	"""
 	def __init__(self):
 		super(VideoHandler, self).__init__()
-		self.arg = arg
 		self.stream_init = Stream("pc")
 		self.cap = self.stream_init.init_stream()
 
 		# Build and exception if the video source is None
-		if (!self.cap.isOpened()):
+		if not self.cap.isOpened():
 			print("There video source doesn't exist")
 			sys.exit(1)
 
@@ -49,10 +48,11 @@ class Stream(object):
 	def __init__(self, device = "raspi", videosource = 0):
 		super(Stream, self).__init__()
 		self.device = device
+		self.videosource = videosource
 
 	def init_stream(self):
 		if self.device == "pc":
-			self.capture = cv2.VideoCapture(videosource)
+			self.capture = cv2.VideoCapture(self.videosource)
 		else:
 			self.capture = None
 		return self.capture
