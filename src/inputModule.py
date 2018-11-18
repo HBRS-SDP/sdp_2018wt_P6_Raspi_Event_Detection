@@ -1,6 +1,7 @@
 # required imports
 import cv2
 import numpy as np
+import sys
 
 class VideoHandler(object):
 	"""
@@ -12,9 +13,29 @@ class VideoHandler(object):
 	returns: frames
 	-----------------------------------
 	"""
-	def __init__(self, arg):
-		super (VideoHandler, self).__init__()
+	def __init__(self):
+		super(VideoHandler, self).__init__()
 		self.arg = arg
+		self.stream_init = Stream("pc")
+		self.cap = self.stream_init.init_stream()
+
+		# Build and exception if the video source is None
+		if (!self.cap.isOpened()):
+			print("There video source doesn't exist")
+			sys.exit(1)
+
+	def get_current_frame(self):
+		"""
+		--------------------------------
+		used to get current frame from the 
+		given video source. 
+
+		Returns: Frame
+		Format: numpy ndarray
+		---------------------------------
+		"""
+		_, frame = self.cap.read()
+		return frame
 
 class Stream(object):
 	"""
@@ -25,7 +46,13 @@ class Stream(object):
 	returns: Video capture object
 	--------------------------------------
 	"""
-	def __init__(self, arg):
+	def __init__(self, device = "raspi", videosource = 0):
 		super(Stream, self).__init__()
-		self.arg = arg
-		
+		self.device = device
+
+	def init_stream(self):
+		if self.device == "pc":
+			self.capture = cv2.VideoCapture(videosource)
+		else:
+			self.capture = None
+		return self.capture
