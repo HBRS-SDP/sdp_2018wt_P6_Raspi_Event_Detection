@@ -1,6 +1,7 @@
 """
-Coded by: Harsh Munshi
-Company: Graymatics INC
+--------------------------------------------
+Coded by: Harsh Munshi and Vishwas Sharma
+-------------------------------------------
 """
 
 import cv2
