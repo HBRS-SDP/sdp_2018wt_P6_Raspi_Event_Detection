@@ -1,22 +1,44 @@
-# just for reference, this will recide on the raspberry pis
-
-import zmq
-import random
-import sys
+# load additional Python modules
+import socket  
 import time
-import configparser
+import random
 
-config = configparser.ConfigParser() 
-config.read('distribute.ini')
+# create TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-port = config["ports"]["default"]
-context = zmq.Context()
-socket = context.socket(zmq.PAIR)
-socket.connect("tcp://localhost:%s" % port)
+# retrieve local hostname
+local_hostname = socket.gethostname()
 
-while True:
-    msg = socket.recv()
-    print msg
-    socket.send("client message to server1")
-    socket.send("client message to server2")
-    time.sleep(1)
+# get fully qualified hostname
+local_fqdn = socket.getfqdn()
+
+# get the according IP address
+ip_address = socket.gethostbyname(local_hostname)
+
+# bind the socket to the port 23456, and connect
+server_address = ('127.0.0.1', 8880)  
+sock.connect(server_address)  
+print ("connecting to %s (%s) with %s" % (local_hostname, local_fqdn, ip_address))
+
+# define example data to be sent to the server
+temperature_data = ["15", "22", "21", "26", "25", "19"]  
+for entry in temperature_data:  
+    print ("data: %s" % entry)
+    new_data = str("temperature: %s\n" % entry).encode("utf-8")
+    sock.sendall(new_data)
+
+    # wait for two seconds
+    time.sleep(2)
+
+while(1):
+    print("data sent: {}".format(random.randint(1,30)))
+
+    new_data = str("temperature: %s\n" % random.randint(1,30)).encode("utf-8")
+    sock.sendall(new_data)
+
+    # wait for two seconds
+    time.sleep(2)
+
+
+# close connection
+sock.close() 

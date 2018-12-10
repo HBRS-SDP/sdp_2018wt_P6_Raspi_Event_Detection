@@ -1,20 +1,48 @@
-import zmq
-import time
-import configparser
+# load additional Python module
+import socket
 
-config = configparser.ConfigParser() 
-config.read('distribute.ini')
+# create TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-port = config["ports"]["parent"]
+# retrieve local hostname
+local_hostname = socket.gethostname()
 
-# make the context
-context = zmq.Context()
-socket = context.socket(zmq.PAIR)
-socket.bind("tcp://*:%s" % port)
+# get fully qualified hostname
+local_fqdn = socket.getfqdn()
 
-while True:
-	msg = "this is under prod"
-    socket.send(msg)
-    msg = socket.recv()
-    print msg
-    time.sleep(1)
+# get the according IP address
+ip_address = socket.gethostbyname(local_hostname)
+
+# output hostname, domain name and IP address
+print ("working on %s (%s) with %s" % (local_hostname, local_fqdn, ip_address))
+
+# bind the socket to the port 23456
+server_address = ('127.0.0.1', 8880)  
+print ('starting up on %s port %s' % server_address)  
+sock.bind(server_address)
+
+# listen for incoming connections (server mode) with one connection at a time
+sock.listen(1)
+
+while True:  
+    # wait for a connection
+    print ('waiting for a connection')
+    connection, client_address = sock.accept()
+
+    try:
+        # show who connected to us
+        print ('connection from', client_address)
+
+        # receive the data in small chunks and print it
+        while True:
+            data = connection.recv(64)
+            if data:
+                # output received data
+                print ("Data: %s" % data)
+            else:
+                # no more data -- quit the loop
+                print ("no more data.")
+                break
+    finally:
+        # Clean up the connection
+        connection.close()
