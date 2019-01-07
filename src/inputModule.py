@@ -2,6 +2,15 @@
 import cv2
 import numpy as np
 import sys
+import configparser
+
+###
+"""
+config = configparser.ConfigParser()
+cfg = config.read('config.ini')
+cfg['paths']
+"""
+###
 
 class VideoHandler(object):
 	"""

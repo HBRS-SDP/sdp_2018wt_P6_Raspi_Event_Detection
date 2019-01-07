@@ -1,5 +1,5 @@
 {
-	"input" : "sample1.mp4",
+	"input" : "/home/harsh/Documents/Masters/sem2/sdp/sdp_2018wt_P6_Raspi_Event_Detection/events/sample1.mp4",
 	"show_video": true,
 	"min_motion_frames": 8,
 	"camera_warmup_time": 2.5,

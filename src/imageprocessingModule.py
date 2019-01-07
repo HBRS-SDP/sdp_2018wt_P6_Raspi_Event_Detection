@@ -15,17 +15,18 @@ class Preprocess(object):
 	"""
 	def __init__(self):
 		super(Preprocess, self).__init__()
+		pass
 
-		# initialize the input module
-		self.init_input = inputModule.VideoHandler()
-		# fetch the frame
-		self.color_frame = self.init_input.get_current_frame()
-
-	def convert_to_other_color_space(space = "gray"):
+	def convert_to_other_color_space(self, frame, space = "gray"):
 		if space == "gray":
-			self.transformed_frame = cv2.cvtColor(self.color_frame, cv2.COLOR_BGR2GRAY)
+			self.transformed_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
 		return self.transformed_frame
+
+	def blur(self, frame):
+		gray = cv2.GaussianBlur(frame, (21, 21), 0)
+		return gray
+
 
 class Extractfeatures(object):
 	"""docstring for Extractfeatures"""

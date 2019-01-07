@@ -1,3 +1,10 @@
 1. parse the msgs as json
+-----------------------
 
-Genrall
+
+What info needs to be exchanged? What is the format of the data?
+
+1. Event class -
+           def trigger()
+
+2. Use publishers and subscriber (example)
