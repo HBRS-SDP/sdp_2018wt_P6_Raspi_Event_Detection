@@ -7,12 +7,12 @@ This project deals with detecting events in the scene using multiple raspberry P
 
 The initial thought of event definition was quiet unclear since object motion is an event and so is object removal. However to narrow things down we define two major types of events:
 1. Binary Events
-* Object Removal
-* Object Introduction
+	* Object Removal
+	* Object Introduction
 
 2. Sequential Events
-* Robot Arrival
-* Robot Departure
-* Object pick
-* Object place
+	* Robot Arrival
+	* Robot Departure
+	* Object pick
+	* Object place
 
