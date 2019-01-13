@@ -53,11 +53,38 @@ Any of the aforementioend event has got one common trigger: The motion trigger. 
 ```
 
 The project has three main modules and one experimental module. The core modules are:
-	* communication
-	* events
-	* src
+1. communication
+2. events
+3. src
 
 And the experimental module is:
-	* object detection
+1. object detection
+
+## Communication Module
+
+This module is responsible for handling Queries from Raspberry Pis to the master which master responds with data for that specific pi and when the Pi detects an event, it sends it to the master in a dictionary format and the master replies an acknoledgement signal.
+
+To achieve we use a PAIR messaging pattern. PAIR has the following charactaristics:
+1. Pair offers many-to-one and one-to-many bidirectional communication.
+2. There is no specific state stored within the socket.
+3. The server listens on a certain port and a client connects to it
+
+[Source: https://learning-0mq-with-pyzmq.readthedocs.io/en/latest/pyzmq/patterns/pair.html]
 
 
+
+## Source Module/Folder
+
+The src contains all the submodules required to run the process. It has the following submodules:
+1. inputModule: Responsible for setting up the video source and has associated function to get the latest frame.
+2. imageprocessingModule: Has basic image processing tools for colorspace conversion, blurs and other sub functions for tranformations.
+3. eventModule: Has triggers and other individual classes of events which get spawned when motion trigger is set to true.
+4. main: This is the module which binds all other modules and communicates with the master, set up the ROI and reads the config file.
+
+## Object Detection Module
+
+Currently experimental, not integrated with the main files. The idea is to detect each objects and give object level inferences. 
+
+## Algorethmic Walkthrough
+
+![alt text](fd.jpg)
