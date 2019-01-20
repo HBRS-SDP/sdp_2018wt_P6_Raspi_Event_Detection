@@ -24,7 +24,7 @@ class VideoHandler(object):
 	"""
 	def __init__(self):
 		super(VideoHandler, self).__init__()
-		self.stream_init = Stream("pc")
+		self.stream_init = Stream("pc", sys.argv[1])
 		self.cap = self.stream_init.init_stream()
 
 		# Build and exception if the video source is None
@@ -54,7 +54,7 @@ class Stream(object):
 	returns: Video capture object
 	--------------------------------------
 	"""
-	def __init__(self, device = "raspi", videosource = 0):
+	def __init__(self, device = "pc", videosource = 0):
 		super(Stream, self).__init__()
 		self.device = device
 		self.videosource = videosource

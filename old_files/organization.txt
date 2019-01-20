@@ -1,0 +1,22 @@
+================================================================
+This file represents the structure of code for the project
+================================================================
+
+The inital effort is to organize the project modulewise. The modules included are:
+* Input module (responsible for capturing and video/image input management)
+* Imageprocessing module (responsible for extracting the region of interest)
+* Event module (responsible to monitor the events)
+
+The modulewise representation and software flow is as follows:
+* Input Module:
+** class VideoHandler has a class stream
+
+* Imageproc Module:
+** class preprocess accesses classes of Input Module and has a class Extractfeatures which has a class Postprocess.
+
+* Event Module:
+** class Event can access classes of Imageproc Module and has classes for individual events.
+
+The respective code(s) are given in the src folder. 
+
+Note: This is a project under development
