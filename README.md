@@ -85,6 +85,6 @@ The src contains all the submodules required to run the process. It has the foll
 
 Currently experimental, not integrated with the main files. The idea is to detect each objects and give object level inferences. 
 
-## Algorethmic Walkthrough
+## Algorithmic Walkthrough
 
 ![alt text](fd.jpg)
