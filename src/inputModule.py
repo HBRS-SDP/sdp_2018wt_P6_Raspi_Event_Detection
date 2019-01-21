@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 import sys
 import configparser
+# from picamera.array import PiRGBArray
+# from picamera import PiCamera
 
 ###
 """
@@ -24,7 +26,15 @@ class VideoHandler(object):
 	"""
 	def __init__(self):
 		super(VideoHandler, self).__init__()
-		self.stream_init = Stream("pc", sys.argv[1])
+		if sys.argv[1] not in ["pc", "pi", "video"]:
+			print("[ERR]: The specified mode does not exists")
+			sys.exit(0)
+		else:
+			self.mode = sys.argv[1]
+		if self.mode == "video":
+			self.stream_init = Stream(self.mode, sys.argv[2])
+		else:
+			self.stream_init = Stream(self.mode)
 		self.cap = self.stream_init.init_stream()
 
 		# Build and exception if the video source is None
@@ -42,7 +52,11 @@ class VideoHandler(object):
 		Format: numpy ndarray
 		---------------------------------
 		"""
-		_, frame = self.cap.read()
+		if self.mode == "pi":
+			frame = self.cap.capture(PiRGBArray(self.cap), format="bgr")
+			frame = frame.array
+		else:
+			_, frame = self.cap.read()
 		return frame
 
 class Stream(object):
@@ -60,8 +74,13 @@ class Stream(object):
 		self.videosource = videosource
 
 	def init_stream(self):
-		if self.device == "pc":
+		if self.device == "video":
+			self.capture = cv2.VideoCapture(self.videosource)
+		elif self.device == "pc":
 			self.capture = cv2.VideoCapture(self.videosource)
 		else:
-			self.capture = None
+			self.capture = PiCamera()
+			self.capture.resolution = [640,480]
+			self.capture.framerate = 7
+			
 		return self.capture

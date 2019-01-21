@@ -7,7 +7,7 @@ import datetime
 
 class Event(object):
 	"""docstring for Event"""
-	def __init__(self, roi):
+	def __init__(self, roi, events):
 		super(Event, self).__init__()
 		# initializing list of lists for roi
 		self.roi = roi
@@ -24,6 +24,7 @@ class Event(object):
 		self.object_info = {}
 		self.res = {}
 		self.frame_number = 1
+		self.events = events
 
 	def eventManager(self, frame, segment, roi):
 		self.res = {}
@@ -38,46 +39,50 @@ class Event(object):
 			self.mask_original = self.new_mask
 
 		# Check grasp
-		self.grasp_flag, self.track_grasp = self._check_grasp(self.num, self.num_objects, self.track_grasp)
-		if self.track_grasp > 3:
-			self.track_grasp = 0
-			print("[INFO]: Object Grasped")
-			self.res["data"] = []
-			#self.res["data"]["event"] = []
-			timing = datetime.datetime.now()
-			self.res["data"].append(["Object Grasp", (str(timing.year)+"/"+str(timing.month)+"/"+ str(timing.day),\
-				str(timing.hour)+"."+str(timing.minute)+"."+str(timing.second))])
-			self.num_objects = self.num
-			self.previous_state = "grasp"
+		if "grasp" in self.events:
+			self.grasp_flag, self.track_grasp = self._check_grasp(self.num, self.num_objects, self.track_grasp)
+			if self.track_grasp > 3:
+				self.track_grasp = 0
+				print("[INFO]: Object Grasped")
+				self.res["data"] = []
+				#self.res["data"]["event"] = []
+				timing = datetime.datetime.now()
+				self.res["data"].append(["Object Grasp", (str(timing.year)+"/"+str(timing.month)+"/"+ str(timing.day),\
+					str(timing.hour)+"."+str(timing.minute)+"."+str(timing.second))])
+				self.num_objects = self.num
+				self.previous_state = "grasp"
 
 		# Check Release
-		self.release_flag, self.track_release = self._check_release(self.num, self.num_objects, self.track_release)
-		if self.track_release > 3:
-			self.track_release = 0
-			print("[INFO]: Object Released")
-			self.res["data"] = []
-			timing = datetime.datetime.now()
-			self.res["data"].append(["Object Release", (str(timing.year)+"/"+str(timing.month)+"/"+ str(timing.day),\
-				str(timing.hour)+"."+str(timing.minute)+"."+str(timing.second))])
-			self.num_objects = self.num
-			self.previous_state = "release"
+		if "release" in self.events:
+			self.release_flag, self.track_release = self._check_release(self.num, self.num_objects, self.track_release)
+			if self.track_release > 3:
+				self.track_release = 0
+				print("[INFO]: Object Released")
+				self.res["data"] = []
+				timing = datetime.datetime.now()
+				self.res["data"].append(["Object Release", (str(timing.year)+"/"+str(timing.month)+"/"+ str(timing.day),\
+					str(timing.hour)+"."+str(timing.minute)+"."+str(timing.second))])
+				self.num_objects = self.num
+				self.previous_state = "release"
 
-		#print("[PREV STATE] {}".format(self.previous_state))
 		if self.previous_state in ["grasp", "release"] and self.motion_flag == False:
-		
-			if self.previous_state == "grasp":
-				print("[INFO]: Object Removed")
-				timing = datetime.datetime.now()
-				self.res["data"] = []
-				self.res["data"].append(["Object Removed", (str(timing.year)+"/"+str(timing.month)+"/"+ str(timing.day),\
-					str(timing.hour)+"."+str(timing.minute)+"."+str(timing.second))])
-			elif self.previous_state == "release":
-				print("[INFO]: Object Introduced")
-				timing = datetime.datetime.now()
-				self.res["data"] = []
-				self.res["data"].append(["Object Introduced", (str(timing.year)+"/"+str(timing.month)+"/"+ str(timing.day),\
-					str(timing.hour)+"."+str(timing.minute)+"."+str(timing.second))])
-			self.previous_state = None
+
+				if self.previous_state == "grasp":
+					print("[INFO]: Object Removed")
+					timing = datetime.datetime.now()
+					if "object_removal" in self.events:
+						self.res["data"] = []
+						self.res["data"].append(["Object Removed", (str(timing.year)+"/"+str(timing.month)+"/"+ str(timing.day),\
+							str(timing.hour)+"."+str(timing.minute)+"."+str(timing.second))])
+			
+				elif self.previous_state == "release":
+					print("[INFO]: Object Introduced")
+					timing = datetime.datetime.now()
+					if "object_introduction" in self.events:
+						self.res["data"] = []
+						self.res["data"].append(["Object Introduced", (str(timing.year)+"/"+str(timing.month)+"/"+ str(timing.day),\
+							str(timing.hour)+"."+str(timing.minute)+"."+str(timing.second))])
+				self.previous_state = None
 
 		return self.res
 

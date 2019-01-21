@@ -9,7 +9,7 @@ context = zmq.Context()
 socket = context.socket(zmq.PAIR)
 socket.connect("tcp://localhost:%s" % port)
 
-config = [{"id":1, "data": {"id":1, "roi":[[[199,42],[604,315]]]}}, {"id":2, "data": {"id":1, "roi":[[[199,42],[604,315]]]}}]
+config = [{"id":1, "data": {"id":1, "roi":[[[199,42],[604,315]]], "events":["grasp","release", "object_removal"], "fps":7}}, {"id":2, "data": {"id":1, "roi":[[[199,42],[604,315]]]}}]
 print(len(config))
 all_data = []
 while True:
