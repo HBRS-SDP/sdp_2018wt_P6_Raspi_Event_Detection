@@ -1,5 +1,7 @@
 # Raspberry Pi Event Detection
 
+NOTE: The running instructions are provided in the src folder.
+
 This project deals with detecting events in the scene using multiple raspberry Pis. The general setup, backend processes and "how-to" is described in this readme. Please note that there will not be any requirements file for this project since the setup process for a raspberry Pi is much different than that on a PC.
 
 
