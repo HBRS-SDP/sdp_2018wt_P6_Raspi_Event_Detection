@@ -14,13 +14,14 @@ Contributed by: Vishwas Sharma
 
 conf = json.load(open("conf.json"))
 print(conf["input"])
-cap = cv2.VideoCapture(sys.argv[1])
+cap = cv2.VideoCapture(conf["input"])
 print(cap)
 avg = None
 
 while(True):
 	ret, frame = cap.read()
-	print(ret)
+	#print(ret)
+	frame = cv2.resize(frame, (640,480))
 	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 	gray = cv2.GaussianBlur(gray, (21, 21), 0)
 	text = "Normal"
@@ -30,7 +31,7 @@ while(True):
 		print("[INFO] starting background model...")
 		avg = gray.copy().astype("float")
 		continue
-	cv2.accumulateWeighted(gray, avg, 0.5)
+	cv2.accumulateWeighted(gray, avg, 0.7)
 	frameDelta = cv2.absdiff(gray, cv2.convertScaleAbs(avg))
 
 	thresh = cv2.threshold(frameDelta, conf["delta_thresh"], 255, cv2.THRESH_BINARY)[1]
